@@ -23,7 +23,7 @@ async function isAdminUser(user){
 }
 
 async function signInStudentWithGoogle(){
-  const redirectTo=window.location.origin+window.location.pathname.replace(/[^/]*$/,'')+'login.html?oauth=1';
+  const redirectTo=window.location.origin+window.location.pathname.replace(/[^/]*$/,'')+'login.html';
   const {error}=await supabaseClient.auth.signInWithOAuth({provider:'google',options:{redirectTo,queryParams:{prompt:'select_account'}}});
   if(error)throw error;
 }
