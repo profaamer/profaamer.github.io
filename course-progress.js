@@ -3,11 +3,11 @@ const DIRECT_TAX_PROGRESS_ITEMS=[
  {key:'tutorial',label:'E-Tutorial',manual:true},
  {key:'econtent',label:'E-Content',manual:true},
  {key:'web_resources',label:'Web Resources',manual:true},
- {key:'assignment_1',label:'Module 1 Assignment'},
- {key:'assignment_2',label:'Module 2 Assignment'},
- {key:'assignment_3',label:'Module 3 Assignment'},
- {key:'assignment_4',label:'Module 4 Assignment'},
- {key:'assignment_5',label:'Module 5 Assignment'},
+ {key:'assignment_1',label:'Module 1 Assignment',moduleName:'Introduction to Income Tax'},
+ {key:'assignment_2',label:'Module 2 Assignment',moduleName:'Exempted Incomes'},
+ {key:'assignment_3',label:'Module 3 Assignment',moduleName:'Income from Salaries'},
+ {key:'assignment_4',label:'Module 4 Assignment',moduleName:'Income from House Property'},
+ {key:'assignment_5',label:'Module 5 Assignment',moduleName:'Income from Business or Profession'},
  {key:'final_exam',label:'Final Examination'}
 ];
 
@@ -40,7 +40,8 @@ async function renderDirectTaxProgress(){
  list.innerHTML=DIRECT_TAX_PROGRESS_ITEMS.map(item=>{
    const done=p.completed.has(item.key);
    const action=item.manual&&!done?`<button class="progressMark" onclick="completeProgressItem('${item.key}',this)">MARK COMPLETE</button>`:'';
-   return `<div class="progressRow"><span class="progressState ${done?'done':'pending'}">${done?'✓':'○'}</span><span class="progressLabel">${item.label}</span><span class="progressText ${done?'doneText':''}">${done?'Completed':'Pending'}</span>${action}</div>`;
+   const name=item.moduleName?`<span style="display:block;font-weight:400;color:#6b7280;font-size:12px;margin-top:3px">${item.moduleName}</span>`:'';
+   return `<div class="progressRow"><span class="progressState ${done?'done':'pending'}">${done?'✓':'○'}</span><span class="progressLabel">${item.label}${name}</span><span class="progressText ${done?'doneText':''}">${done?'Completed':'Pending'}</span>${action}</div>`;
  }).join('');
 }
 
