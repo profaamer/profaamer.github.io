@@ -4,7 +4,6 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLI
 
 const COURSE_ACCESS_RULES = {
   'direct-tax-course.html': 'direct-taxes-law-practice-1',
-  'direct-tax-course-info.html': 'direct-taxes-law-practice-1',
   'direct-taxes-law-practice-1.html': 'direct-taxes-law-practice-1',
   'direct-tax-law-practice-1.html': 'direct-taxes-law-practice-1',
   'direct-tax-study-material.html': 'direct-taxes-law-practice-1',
@@ -42,7 +41,7 @@ async function requireCourseEnrollment(courseKey, user) {
     .eq('status', 'active')
     .maybeSingle();
   if (error || !data) {
-    window.location.replace('econtent.html?enrol_required=' + encodeURIComponent(courseKey));
+    window.location.replace('direct-tax-course-info.html');
     return null;
   }
   return currentUser;
@@ -54,6 +53,7 @@ async function logout() {
 }
 
 // Automatic direct-URL protection for enrolled-course pages.
+// Course Information is intentionally excluded so logged-in students may review it before enrolment.
 (async () => {
   const page = window.location.pathname.split('/').pop() || '';
   const courseKey = COURSE_ACCESS_RULES[page];
@@ -73,11 +73,11 @@ async function logout() {
       .eq('status', 'active')
       .maybeSingle();
     if (error || !data) {
-      window.location.replace('econtent.html?enrol_required=' + encodeURIComponent(courseKey));
+      window.location.replace('direct-tax-course-info.html');
       return;
     }
     document.documentElement.style.visibility = 'visible';
   } catch (e) {
-    window.location.replace('econtent.html?enrol_required=' + encodeURIComponent(courseKey));
+    window.location.replace('direct-tax-course-info.html');
   }
 })();
