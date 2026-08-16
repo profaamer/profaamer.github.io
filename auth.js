@@ -21,6 +21,20 @@ async function getCurrentUser() {
   return user;
 }
 
+async function recordActivity(eventType, portalArea='student') {
+  try {
+    const user = await getCurrentUser();
+    if (!user) return false;
+    const { error } = await supabaseClient.from('user_activity_log').insert({
+      user_id: user.id,
+      event_type: eventType,
+      portal_area: portalArea,
+      user_agent: navigator.userAgent || null
+    });
+    return !error;
+  } catch (e) { return false; }
+}
+
 async function requireAuth() {
   const user = await getCurrentUser();
   if (!user) {
@@ -48,12 +62,17 @@ async function requireCourseEnrollment(courseKey, user) {
 }
 
 async function logout() {
+  await recordActivity('logout','student');
   await supabaseClient.auth.signOut();
   window.location.href = 'login.html';
 }
 
-// Automatic direct-URL protection for enrolled-course pages.
-// Course Information is intentionally excluded so logged-in students may review it before enrolment.
+async function adminLogoutTracked() {
+  await recordActivity('logout','admin');
+  await supabaseClient.auth.signOut();
+  window.location.replace('admin-login.html');
+}
+
 (async () => {
   const page = window.location.pathname.split('/').pop() || '';
   const courseKey = COURSE_ACCESS_RULES[page];
