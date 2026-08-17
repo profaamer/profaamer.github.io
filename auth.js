@@ -13,34 +13,70 @@ const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHA
       padding:0 16px !important;
       background:#111827 !important;
       color:#fff !important;
-    }
-    .header{
+      font-family:Arial,Helvetica,sans-serif !important;
       display:flex !important;
       align-items:center !important;
-      justify-content:center !important;
+      text-align:left !important;
+    }
+    .header:has(.headin){justify-content:center !important;}
+    .header:has(.headin) .headin,
+    .head .headin{
+      width:100% !important;
+      max-width:980px !important;
+      margin:0 auto !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:space-between !important;
+      gap:15px !important;
+      text-align:left !important;
     }
     .header:not(:has(.headin)){
       flex-direction:column !important;
-      text-align:center !important;
+      justify-content:center !important;
+      align-items:stretch !important;
     }
-    .header:has(.headin) .headin{
+    .header:not(:has(.headin))>h1,
+    .header:not(:has(.headin))>h2,
+    .header:not(:has(.headin))>p,
+    .header:not(:has(.headin))>div,
+    .head>h1,
+    .head>h2,
+    .head>p,
+    .head>div:not(.headin){
       width:100% !important;
-      max-width:1180px !important;
-      margin:auto !important;
-    }
-    .head{
-      display:flex !important;
-      align-items:center !important;
-    }
-    .head>h1,.head>div{
-      width:100% !important;
-      max-width:1100px !important;
+      max-width:980px !important;
       margin-left:auto !important;
       margin-right:auto !important;
+      text-align:left !important;
     }
-    .header h1,.header h2,.header p,.head h1,.head h2,.head p{margin-top:0;}
+    .header h1,.head h1{
+      font-size:25px !important;
+      line-height:1.15 !important;
+      font-weight:700 !important;
+      margin-top:0 !important;
+      margin-bottom:0 !important;
+      text-align:left !important;
+    }
+    .header h2,.head h2{
+      font-size:25px !important;
+      line-height:1.15 !important;
+      font-weight:700 !important;
+      margin-top:0 !important;
+      margin-bottom:0 !important;
+      text-align:left !important;
+    }
+    .header p,.head p,.header #courseTitle,.head #who{
+      font-size:14px !important;
+      line-height:1.35 !important;
+      font-weight:400 !important;
+      margin-top:5px !important;
+      margin-bottom:0 !important;
+      text-align:left !important;
+    }
     @media(max-width:700px){
       .header,.head{height:106px !important;min-height:106px !important;padding:0 14px !important;}
+      .header h1,.header h2,.head h1,.head h2{font-size:22px !important;}
+      .header p,.head p,.header #courseTitle,.head #who{font-size:13px !important;}
     }
   `;
   document.head.appendChild(style);
