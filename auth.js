@@ -37,9 +37,36 @@ function isStudentProfileComplete(profile){
   return !!(profile&&String(profile.full_name||'').trim()&&String(profile.mobile||'').trim()&&String(profile.state||'').trim()&&String(profile.district||'').trim()&&String(profile.college_name||'').trim());
 }
 
+async function getActiveFinalExam(userId){
+  try{
+    const {data:student}=await supabaseClient.from('student_profiles').select('user_id').eq('user_id',userId).maybeSingle();
+    if(!student)return null;
+    const {data}=await supabaseClient.from('final_exam_attempts').select('course_key,status,expires_at,started_at').eq('user_id',userId).eq('status','in_progress').order('started_at',{ascending:false}).limit(1).maybeSingle();
+    if(!data)return null;
+    if(data.expires_at&&new Date(data.expires_at).getTime()<=Date.now())return null;
+    return data;
+  }catch(e){return null}
+}
+
+async function enforceActiveFinalExamRedirect(){
+  try{
+    const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
+    if(page==='course-final-exam.html')return false;
+    const user=await getCurrentUser();
+    if(!user)return false;
+    const active=await getActiveFinalExam(user.id);
+    if(!active)return false;
+    const target='course-final-exam.html?course='+encodeURIComponent(active.course_key);
+    location.replace(target);
+    return true;
+  }catch(e){return false}
+}
+
 async function requireAuth(){
   const user=await getCurrentUser();
   if(!user){window.location.href='login.html';return null}
+  const redirected=await enforceActiveFinalExamRedirect();
+  if(redirected)return null;
   return user;
 }
 
@@ -62,3 +89,5 @@ async function adminLogoutTracked(){
   await supabaseClient.auth.signOut();
   window.location.replace('index.html');
 }
+
+window.addEventListener('DOMContentLoaded',()=>{enforceActiveFinalExamRedirect()});
