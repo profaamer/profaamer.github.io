@@ -32,8 +32,8 @@
   }
 
   function patchQuestionBank(){
-    if(typeof window.updateScheme!=='function')return;
-    window.updateScheme=function(){const c=window.courses?.find(x=>x.course_key===document.getElementById('course')?.value);if(!c)return;const a=assignmentMix(c.assignment_questions),f=finalMix(c.final_exam_questions),scheme=document.getElementById('scheme');if(scheme)scheme.innerHTML='<strong>'+String(c.title||'')+'</strong><br>Assignment: '+Number(c.assignment_questions||0)+' questions ('+a.easy+' Easy + '+a.moderate+' Moderate + '+a.hard+' Hard) — automatic 50/50 policy.<br>Final Exam: '+Number(c.final_exam_questions||0)+' questions ('+f.easy+' Easy + '+f.moderate+' Moderate + '+f.hard+' Hard) — automatic 20/50/30 policy.';};
+    if(typeof window.updateScheme!=='function'||typeof window.currentCourse!=='function')return;
+    window.updateScheme=function(){const c=window.currentCourse(document.getElementById('course')?.value);if(!c)return;const a=assignmentMix(c.assignment_questions),f=finalMix(c.final_exam_questions),scheme=document.getElementById('scheme');if(scheme)scheme.innerHTML='<strong>'+String(c.title||'')+'</strong><br>Assignment: '+Number(c.assignment_questions||0)+' questions ('+a.easy+' Easy + '+a.moderate+' Moderate + '+a.hard+' Hard) — automatic 50/50 policy.<br>Final Exam: '+Number(c.final_exam_questions||0)+' questions ('+f.easy+' Easy + '+f.moderate+' Moderate + '+f.hard+' Hard) — automatic 20/50/30 policy.';};
     setTimeout(()=>window.updateScheme(),50);
   }
 
