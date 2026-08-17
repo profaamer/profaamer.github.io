@@ -93,6 +93,33 @@ const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHA
   document.head.appendChild(style);
 })();
 
+function applyLockedAssessmentPolicyUI(){
+  const caPass=document.getElementById('caPass');
+  const esePass=document.getElementById('esePass');
+  [caPass,esePass].forEach(input=>{
+    if(!input)return;
+    input.value='40';
+    input.readOnly=true;
+    input.disabled=true;
+    input.style.background='#f3f4f6';
+    input.style.color='#6b7280';
+    input.title='Locked by portal policy at 40%';
+    const label=input.closest('.field')?.querySelector('label');
+    if(label&&!label.textContent.includes('Locked')) label.textContent=label.textContent.replace('Passing %','Passing % — Locked');
+  });
+  if((caPass||esePass)&&!document.getElementById('lockedPassPolicyNote')){
+    const parent=(caPass||esePass).closest('.grid');
+    if(parent){
+      const note=document.createElement('div');
+      note.id='lockedPassPolicyNote';
+      note.className='full';
+      note.style.cssText='background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px;font-size:13px;line-height:1.45;color:#475569';
+      note.innerHTML='<strong>Passing Rule:</strong> 40% separately in CA and ESE is locked for every course. CA/ESE weightage remains configurable, but the two components must total 100 marks.';
+      parent.appendChild(note);
+    }
+  }
+}
+
 async function getCurrentUser(){
   const {data:{user}}=await supabaseClient.auth.getUser();
   return user;
@@ -183,6 +210,8 @@ async function adminLogoutTracked(){
 
 window.addEventListener('DOMContentLoaded',()=>{
   enforceActiveFinalExamRedirect();
+  applyLockedAssessmentPolicyUI();
+  setTimeout(applyLockedAssessmentPolicyUI,300);
   if((location.pathname.split('/').pop()||'').toLowerCase()==='admin-student-results.html'){
     const s=document.createElement('script');
     s.src='admin-final-exam-pdf.js?v=20260817-pdf1';
