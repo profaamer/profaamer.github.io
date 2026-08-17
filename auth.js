@@ -90,4 +90,11 @@ async function adminLogoutTracked(){
   window.location.replace('index.html');
 }
 
-window.addEventListener('DOMContentLoaded',()=>{enforceActiveFinalExamRedirect()});
+window.addEventListener('DOMContentLoaded',()=>{
+  enforceActiveFinalExamRedirect();
+  if((location.pathname.split('/').pop()||'').toLowerCase()==='admin-student-results.html'){
+    const s=document.createElement('script');
+    s.src='admin-final-exam-pdf.js?v=20260817-pdf1';
+    document.head.appendChild(s);
+  }
+});
