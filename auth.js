@@ -54,11 +54,11 @@ async function requireCourseEnrollment(courseKey,user){
 async function logout(){
   await recordActivity('logout','student');
   await supabaseClient.auth.signOut();
-  window.location.href='login.html';
+  window.location.replace('index.html');
 }
 
 async function adminLogoutTracked(){
   await recordActivity('logout','admin');
   await supabaseClient.auth.signOut();
-  window.location.replace('admin-login.html');
+  window.location.replace('index.html');
 }
