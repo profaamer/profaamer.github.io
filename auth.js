@@ -2,6 +2,50 @@ const SUPABASE_URL='https://ihcnmjjnpjtnjheyypqv.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_cRNRKzPL0rMXvRtT-is7dg_6veyGjGM';
 const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 
+(function applyUnifiedPortalHeader(){
+  const style=document.createElement('style');
+  style.id='unifiedPortalHeaderStyle';
+  style.textContent=`
+    .header,.head{
+      height:106px !important;
+      min-height:106px !important;
+      box-sizing:border-box !important;
+      padding:0 16px !important;
+      background:#111827 !important;
+      color:#fff !important;
+    }
+    .header{
+      display:flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+    }
+    .header:not(:has(.headin)){
+      flex-direction:column !important;
+      text-align:center !important;
+    }
+    .header:has(.headin) .headin{
+      width:100% !important;
+      max-width:1180px !important;
+      margin:auto !important;
+    }
+    .head{
+      display:flex !important;
+      align-items:center !important;
+    }
+    .head>h1,.head>div{
+      width:100% !important;
+      max-width:1100px !important;
+      margin-left:auto !important;
+      margin-right:auto !important;
+    }
+    .header h1,.header h2,.header p,.head h1,.head h2,.head p{margin-top:0;}
+    @media(max-width:700px){
+      .header,.head{height:106px !important;min-height:106px !important;padding:0 14px !important;}
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
 async function getCurrentUser(){
   const {data:{user}}=await supabaseClient.auth.getUser();
   return user;
@@ -92,9 +136,6 @@ async function adminLogoutTracked(){
 
 window.addEventListener('DOMContentLoaded',()=>{
   enforceActiveFinalExamRedirect();
-  const policy=document.createElement('script');
-  policy.src='assessment-policy.js?v=20260817-dynamic1';
-  document.head.appendChild(policy);
   if((location.pathname.split('/').pop()||'').toLowerCase()==='admin-student-results.html'){
     const s=document.createElement('script');
     s.src='admin-final-exam-pdf.js?v=20260817-pdf1';
