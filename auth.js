@@ -25,9 +25,20 @@ const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHA
       max-width:980px !important;
       margin:0 auto !important;
       display:flex !important;
-      align-items:center !important;
-      justify-content:space-between !important;
-      gap:15px !important;
+      flex-direction:column !important;
+      align-items:flex-start !important;
+      justify-content:center !important;
+      gap:0 !important;
+      text-align:left !important;
+    }
+    .header:has(.headin) .headin>h1,
+    .header:has(.headin) .headin>h2,
+    .header:has(.headin) .headin>p,
+    .head .headin>h1,
+    .head .headin>h2,
+    .head .headin>p{
+      width:100% !important;
+      display:block !important;
       text-align:left !important;
     }
     .header:not(:has(.headin)){
