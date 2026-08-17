@@ -92,6 +92,9 @@ async function adminLogoutTracked(){
 
 window.addEventListener('DOMContentLoaded',()=>{
   enforceActiveFinalExamRedirect();
+  const policy=document.createElement('script');
+  policy.src='assessment-policy.js?v=20260817-dynamic1';
+  document.head.appendChild(policy);
   if((location.pathname.split('/').pop()||'').toLowerCase()==='admin-student-results.html'){
     const s=document.createElement('script');
     s.src='admin-final-exam-pdf.js?v=20260817-pdf1';
